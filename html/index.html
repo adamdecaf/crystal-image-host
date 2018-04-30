@@ -4,6 +4,14 @@
     <title>crystal-image-host</title>
   </head>
   <body>
-    <h3>Hello, World!</h3>
+    <h3>crystal-image-host</h3>
+    <p>
+      A <a href="https://crystal-lang.org/">Crystal</a> powered image host. Don't actually use this.
+    </p>
+
+    <form id="upload" method="POST" action="/upload" enctype="multipart/form-data">
+      <label for="file">File:</label> <input type="file" id="file" name="file" />
+      <input type="submit" value="Upload" />
+    </form>
   </body>
 </html>
