@@ -13,8 +13,6 @@ class UploadHandler
 
   def call(ctx)
     if ctx.request.method == "POST" && ctx.request.path == "/upload"
-      puts "#{ctx.request.method}"
-
       # TODO(adam): Check content-length
 
       HTTP::FormData.parse(ctx.request) do |part|
@@ -33,14 +31,15 @@ class UploadHandler
           # Generate new path
           checksum = hasher.hexdigest[0, 16]
           ext = File.extname(File.basename(part.filename || "ukn")) # TODO(adam): detect content type
-          path = File.join([@data_dir, "#{checksum}#{ext}"])
+          name = "#{checksum}#{ext}"
+          path = File.join([@data_dir, name])
 
           # Move uploaded file
           File.rename(file.path, path) unless File.exists?(path)
 
           # Set response
-          ctx.response.status_code = 200
-          ctx.response.print "uploaded #{File.size(path)} bytes"
+          ctx.response.status_code = 302
+          ctx.response.headers.add("Location", "/i/#{name}")
 
           return # quit early after successful upload
         end
